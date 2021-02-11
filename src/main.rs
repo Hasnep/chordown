@@ -1,6 +1,3 @@
-#[macro_use]
-extern crate lazy_static;
-
 use serde_derive::Deserialize;
 use std::env;
 use std::fs;

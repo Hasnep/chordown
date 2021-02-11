@@ -1,3 +1,4 @@
+use once_cell;
 use regex::Regex;
 use std::str::FromStr;
 
@@ -63,15 +64,16 @@ pub struct Chord {
     bass: Option<Note>,
 }
 
-pub fn parse_chord(chord: &str) -> Chord {
+pub fn parse_chord(chord: &str) -> Option<Chord> {
     // Make sure the regex pattern is only compiled once
-    lazy_static! {
-        static ref RE: Regex =
-            Regex::new(r"^(?P<root>[A-G][#b]?)(?P<extension>.*?)(?:/(?P<bass>[A-G][#b]?))?$")
-                .unwrap();
-    }
-    let caps = RE.captures(chord).unwrap();
-    return Chord {
+    static RE: once_cell::sync::Lazy<Regex> = once_cell::sync::Lazy::new(|| {
+        Regex::new(r"^(?P<root>[A-G][#b]?)(?P<extension>.*?)(?:/(?P<bass>[A-G][#b]?))?$").unwrap()
+    });
+    let caps = match RE.captures(chord) {
+        Some(c) => c,
+        None => return None,
+    };
+    let chord = Chord {
         root: Note::from_str(caps.name("root").unwrap().as_str()).unwrap(),
         extension: caps.name("extension").unwrap().as_str().to_string(),
         bass: match caps.name("bass") {
@@ -79,6 +81,7 @@ pub fn parse_chord(chord: &str) -> Chord {
             _ => None,
         },
     };
+    return Some(chord);
 }
 
 #[cfg(test)]
@@ -131,9 +134,27 @@ mod tests {
             ),
         ];
         for (input, expected_output) in test_cases {
-            assert_eq!(parse_chord(input).root, expected_output.root);
-            assert_eq!(parse_chord(input).extension, expected_output.extension);
-            assert_eq!(parse_chord(input).bass, expected_output.bass);
+            assert!(
+                parse_chord(input).is_some(),
+                "Chord should parse currently."
+            );
+            assert_eq!(parse_chord(input).unwrap().root, expected_output.root);
+            assert_eq!(
+                parse_chord(input).unwrap().extension,
+                expected_output.extension
+            );
+            assert_eq!(parse_chord(input).unwrap().bass, expected_output.bass);
+        }
+    }
+
+    #[test]
+    fn test_fails_to_parse_invalid_chords() {
+        let test_cases = vec!["", " ", "abc", "xyz", "XYZ", "123"];
+        for input in test_cases {
+            assert!(
+                parse_chord(input).is_none(),
+                "Invalid chord should not parse."
+            )
         }
     }
 }
