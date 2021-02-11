@@ -172,14 +172,9 @@ struct Line {
 pub fn parse_chord(chord: &str) -> Chord {
     // Make sure the regex pattern is only compiled once
     lazy_static! {
-        static ref RE: Regex = Regex::new(
-            r#"^
-            (?P<root>[A-G][#b]?)
-            (?P<extension>.*?)
-            (?:/(?P<bass>[A-G][#b]?))?
-            $"#
-        )
-        .unwrap();
+        static ref RE: Regex =
+            Regex::new(r"^(?P<root>[A-G][#b]?)(?P<extension>.*?)(?:/(?P<bass>[A-G][#b]?))?$")
+                .unwrap();
     }
     let caps = RE.captures(chord).unwrap();
     return Chord {
