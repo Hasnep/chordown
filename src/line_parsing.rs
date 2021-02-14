@@ -33,7 +33,7 @@ mod tests {
 
     #[test]
     fn test_parse_line_chords_fails_on_invalid_input() {
-        let test_cases = vec!["Q","C D E Q"];
+        let test_cases = vec!["Q", "C D E Q"];
         for input in test_cases {
             assert!(
                 parse_line_chords(input).is_none(),
