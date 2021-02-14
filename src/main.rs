@@ -6,6 +6,7 @@ use std::str::Lines;
 // use toml;
 
 mod chords;
+mod line_parsing;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -64,14 +65,6 @@ fn split_frontmatter_body(lines: Lines) -> (usize, usize) {
 // fn parse_body(body: Vec<str>) {
 //     for line in body {}
 // }
-
-fn parse_line_chords(line: &str) -> Vec<&str> {
-    line.trim().split_whitespace().collect()
-}
-
-fn parse_line_lyrics(line: &str) -> Vec<&str> {
-    line.split('^').map(|s| s.trim()).collect()
-}
 
 // fn parse_chordown() {
 //     // return Chordown;
