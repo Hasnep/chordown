@@ -135,7 +135,7 @@ mod tests {
         for (input, expected_output) in test_cases {
             assert!(
                 parse_chord(input).is_some(),
-                "Chord should parse currently."
+                "Chord should parse correctly."
             );
             assert_eq!(parse_chord(input).unwrap().root, expected_output.root);
             assert_eq!(
