@@ -22,8 +22,8 @@ mod tests {
 
     #[test]
     fn test_parse_line_chords() {
-        let test_cases = vec![("C", vec![parse_chord("C")])];
-        for (input, expected_output) in test_cases {
+        let test_cases = vec!["C", "C D E"];
+        for input in test_cases {
             assert!(
                 parse_line_chords(input).is_some(),
                 "Chord line should parse currently."
