@@ -12,10 +12,6 @@ fn parse_line_chords(line: &str) -> Option<Vec<Chord>> {
     }
 }
 
-fn parse_line_lyrics(line: &str) -> Vec<&str> {
-    line.split('^').map(|s| s.trim()).collect()
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -41,4 +37,8 @@ mod tests {
             );
         }
     }
+}
+
+fn parse_line_lyrics(line: &str) -> Vec<&str> {
+    line.split('^').map(|s| s.trim()).collect()
 }

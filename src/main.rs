@@ -62,18 +62,10 @@ fn split_frontmatter_body(lines: Lines) -> (usize, usize) {
     }
 }
 
-// fn parse_body(body: Vec<str>) {
-//     for line in body {}
-// }
-
-// fn parse_chordown() {
-//     // return Chordown;
-// }
-
-// struct Chordown {
-//     header: Header,
-//     body: Vec<Section>,
-// }
+struct Chordown {
+    header: Header,
+    body: Vec<Section>,
+}
 
 #[derive(Deserialize, Debug)]
 struct Header {
